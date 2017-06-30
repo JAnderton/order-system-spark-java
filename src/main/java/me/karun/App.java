@@ -24,6 +24,7 @@ public class App {
     });
 
     get("/info", (req, res) -> beanManager().infoEndpointBuilder().fetchAppInfo());
+    get("/health", (req, res) -> "{\"status\":\"UP\"}");
   }
 }
 
