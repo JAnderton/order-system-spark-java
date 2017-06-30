@@ -18,7 +18,7 @@ class BeanManager {
   private BeanManager() {
     gson = new GsonBuilder().create();
     orderController = new OrderController(new HashMap<>(), gson);
-    config = new Config("config");
+    config = new Config("config", "git");
     infoEndpointBuilder = new InfoEndpointBuilder(config, gson);
   }
 

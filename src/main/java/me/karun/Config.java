@@ -1,33 +1,31 @@
 package me.karun;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
-import static java.util.ResourceBundle.getBundle;
+import static java.util.function.Function.identity;
 
 class Config {
-  private final ResourceBundle config;
+  private final ResourceBundles bundles;
 
-  Config(final String configFileName) {
-    config = getBundle(configFileName);
+  Config(final String... configFileNames) {
+    bundles = new ResourceBundles(configFileNames);
   }
 
   int getInt(final String key) {
-    return parseInt(get(key));
+    return parseInt(get(key).get());
   }
 
-  String get(final String key) {
-    return config.getString(key);
+  Optional<String> get(final String key) {
+    return bundles.getString(key);
   }
 
-  Map<String, String> getValues(final String baseKey, final String... keys) {
-    final Map<String, String> map = new HashMap<>();
-    for (final String key : keys) {
-      map.put(key, get(baseKey + "." + key));
-    }
-
-    return map;
+  Map<String, String> valuesForKey(final String baseKey) {
+    return bundles.getKeys().stream()
+      .filter(s -> s.startsWith(baseKey))
+      .collect(Collectors.toMap(identity(), s->get(s).get()));
   }
 }
+

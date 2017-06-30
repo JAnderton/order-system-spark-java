@@ -1,6 +1,7 @@
 package me.karun;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.junit.Test;
 
 import java.util.Map;
@@ -12,16 +13,18 @@ public class ConfigTest {
   @Test
   public void getValues_whenCalledOnTheTestFile_thenReturnsCorrectValues() {
     final Map<String, String> values = new Config("test")
-      .getValues("build", "groupId", "artifactId", "version");
+      .valuesForKey("build");
 
     assertThat(values)
-      .containsOnly(new Entry<>("groupId", "Foo"),
-        new Entry<>("artifactId", "Bar"),
-        new Entry<>("version", "1")
+      .containsOnly(
+        new Entry<>("build.groupId", "Foo"),
+        new Entry<>("build.artifactId", "Bar"),
+        new Entry<>("build.version", "1")
       );
   }
 
   @RequiredArgsConstructor
+  @ToString
   class Entry<K, V> implements Map.Entry<K, V> {
     private final K key;
     private final V value;

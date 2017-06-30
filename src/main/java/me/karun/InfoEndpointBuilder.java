@@ -2,12 +2,16 @@ package me.karun;
 
 import com.google.gson.Gson;
 
+import java.util.Map;
+
 class InfoEndpointBuilder {
   private final String appInfo;
 
   InfoEndpointBuilder(final Config config, final Gson gson) {
-    this.appInfo = gson.toJson(config.getValues("build",
-      "groupId", "artifactId", "version"));
+    final Map<String, String> info = config.valuesForKey("build");
+    info.putAll(config.valuesForKey("git"));
+
+    this.appInfo = gson.toJson(info);
   }
 
   String fetchAppInfo() {
