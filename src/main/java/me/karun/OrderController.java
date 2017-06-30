@@ -1,7 +1,6 @@
 package me.karun;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 import spark.Request;
 import spark.Response;
@@ -19,10 +18,9 @@ class OrderController {
   private final Map<Integer, Order> orders;
   private final Gson gson;
 
-  OrderController(final Map<Integer, Order> orders) {
+  OrderController(final Map<Integer, Order> orders, final Gson gson) {
     this.orders = orders;
-    this.gson = new GsonBuilder()
-      .create();
+    this.gson = gson;
   }
 
   String postOrder(final Request request, final Response response) {
@@ -39,7 +37,7 @@ class OrderController {
 
     response.status(HTTP_OK);
     log.debug("Returning status code {} for request {}", response.status(), requestMessage);
-    return order.get().getId().toString();
+    return gson.toJson(order.get());
   }
 
   String getOrder(final Request request, final Response response) {

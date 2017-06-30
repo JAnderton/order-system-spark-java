@@ -15,12 +15,15 @@ public class App {
       stop();
       log.error("Stopped web server due to startup failure. Check logs for details.");
     });
+    after((request, response) -> response.type("application/json"));
 
     final OrderController controller = beanManager().orderController();
     path("/order", () -> {
       post("", "application/json", controller::postOrder);
       get("/:id", "application/json", controller::getOrder);
     });
+
+    get("/info", (req, res) -> beanManager().infoEndpointBuilder().fetchAppInfo());
   }
 }
 

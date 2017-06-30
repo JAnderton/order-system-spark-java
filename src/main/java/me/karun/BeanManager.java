@@ -1,5 +1,8 @@
 package me.karun;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -9,10 +12,14 @@ class BeanManager {
   private static Optional<BeanManager> beanManager = empty();
   private final OrderController orderController;
   private final Config config;
+  private final InfoEndpointBuilder infoEndpointBuilder;
+  private final Gson gson;
 
   private BeanManager() {
-    orderController = new OrderController(new HashMap<>());
+    gson = new GsonBuilder().create();
+    orderController = new OrderController(new HashMap<>(), gson);
     config = new Config("config");
+    infoEndpointBuilder = new InfoEndpointBuilder(config, gson);
   }
 
   static BeanManager beanManager() {
@@ -29,5 +36,9 @@ class BeanManager {
 
   OrderController orderController() {
     return orderController;
+  }
+
+  InfoEndpointBuilder infoEndpointBuilder() {
+    return infoEndpointBuilder;
   }
 }

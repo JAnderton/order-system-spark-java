@@ -1,6 +1,7 @@
 package me.karun;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,18 +30,20 @@ public class OrderControllerTest {
   @Before
   public void setup() {
     orders = new HashMap<>();
-    controller = new OrderController(orders);
+    controller = new OrderController(orders, new GsonBuilder()
+      .create());
   }
 
   @Test
-  public void postOrder_whenAnOrderIsPosted_thenTheResponseIsSuccessful() {
-    final Order expected = new Order(1, "Banana");
-    when(request.body()).thenReturn(gson.toJson(expected));
+  public void postOrder_whenAnOrderIsPosted_thenTheResponseCodeIsSuccessful() {
+    final Order input = new Order(1, "Banana");
+    final String jsonInput = gson.toJson(input);
+    when(request.body()).thenReturn(jsonInput);
 
     final String httpResponse = controller.postOrder(request, this.response);
 
-    assertThat(httpResponse).isEqualTo("1");
-    assertThat(orders.get(1)).isEqualToComparingFieldByField(expected);
+    assertThat(httpResponse).isEqualTo(jsonInput);
+    assertThat(orders.get(1)).isEqualToComparingFieldByField(input);
     verify(response).status(200);
   }
 
