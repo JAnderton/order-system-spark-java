@@ -17,8 +17,10 @@ public class App {
     });
 
     final OrderController controller = beanManager().orderController();
-    post("/order", "application/json", controller::postOrder);
-    get("/order/:id", "application/json", controller::getOrder);
+    path("/order", () -> {
+      post("", "application/json", controller::postOrder);
+      get("/:id", "application/json", controller::getOrder);
+    });
   }
 }
 
