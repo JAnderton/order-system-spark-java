@@ -2,6 +2,7 @@ package me.karun;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.qmetric.spark.authentication.AuthenticationDetails;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -32,6 +33,10 @@ class BeanManager {
 
   Config config() {
     return config;
+  }
+
+  AuthenticationDetails authDetails() {
+    return new AuthenticationDetails(config.get("auth.username").get(), config.get("auth.password").get());
   }
 
   OrderController orderController() {
