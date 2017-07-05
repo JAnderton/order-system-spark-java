@@ -1,6 +1,7 @@
 package me.karun;
 
 import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import spark.Request;
 import spark.Response;
@@ -13,15 +14,11 @@ import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 @Slf4j
+@RequiredArgsConstructor
 class OrderController {
 
   private final Map<Integer, Order> orders;
   private final Gson gson;
-
-  OrderController(final Map<Integer, Order> orders, final Gson gson) {
-    this.orders = orders;
-    this.gson = gson;
-  }
 
   String postOrder(final Request request, final Response response) {
     final String requestMessage = request.body();
